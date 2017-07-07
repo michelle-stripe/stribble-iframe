@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <title>Custom Stribble</title>
+    <style>
+      #Demo-frame-inner {
+        height: 100%;
+        width: 100%;
+      }
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+    </style>
+    <script type="text/javascript">
+      window.addEventListener('message', function(event) {
+        var message = JSON.parse(event.data);
+
+        var oldFrame = document.getElementById('Demo-frame-inner');
+        if (oldFrame) {
+          // remove() doesn't work in IE
+          oldFrame.parentNode.removeChild(oldFrame);
+        }
+
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute(
+          'sandbox',
+          'allow-forms allow-scripts allow-top-navigation-by-user-activation allow-same-origin allow-modals allow-popups'
+        );
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('id', 'Demo-frame-inner');
+
+        document.body.appendChild(iframe);
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(message.html);
+        iframe.contentWindow.document.close();
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
